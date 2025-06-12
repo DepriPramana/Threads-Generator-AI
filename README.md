@@ -1,6 +1,6 @@
 # Threads Generator AI - Ekstensi Chrome
 
-![Screenshot Aplikasi](https://i.imgur.com/your-screenshot-url.png) <!-- Ganti dengan URL screenshot aplikasi Anda -->
+![Screenshot Aplikasi](https://github.com/DepriPramana/Threads-Generator-AI/blob/main/image1.png) <!-- Ganti dengan URL screenshot aplikasi Anda -->
 
 **Threads Generator AI** adalah sebuah ekstensi Chrome yang dirancang untuk membantu pengguna membuat *thread* (untaian) untuk platform media sosial seperti X (Twitter) atau Threads dengan cepat dan mudah. Dengan memanfaatkan kekuatan model AI generatif Google (Gemini), ekstensi ini dapat menghasilkan serangkaian tulisan yang koheren berdasarkan topik, gaya penulisan, dan batasan karakter yang Anda tentukan.
 
