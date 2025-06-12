@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threads Generator AI</title>
+    <link href="tailwind.css" rel="stylesheet">
+    <style>
+        /* Custom styles for a better look and feel */
+        body {
+            width: 400px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+        }
+        .dark {
+            background-color: #1f2937;
+            color: #f3f4f6;
+        }
+        .dark .bg-gray-50 { background-color: #374151; }
+        .dark .bg-white { background-color: #1f2937; }
+        .dark .bg-gray-100 { background-color: #374151; }
+        .dark .text-gray-900 { color: #f9fafb; }
+        .dark .text-gray-500 { color: #9ca3af; }
+        .dark .border-gray-300 { border-color: #4b5563; }
+        .dark .ring-indigo-500:focus { ring-color: #818cf8; }
+        .dark .bg-indigo-600 { background-color: #4f46e5; }
+        .dark .hover\:bg-indigo-700:hover { background-color: #4338ca; }
+        .dark .placeholder-gray-400::placeholder { color: #9ca3af; }
+        .dark .text-red-500 { color: #f87171; }
+        .dark .text-green-500 { color: #34d399; }
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 transition-colors duration-300">
+
+    <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-xl font-bold">Threads Generator AI</h1>
+            <!-- Dark Mode Toggle -->
+            <div class="flex items-center">
+                <span class="text-sm font-medium mr-2" id="dark-mode-label">Dark Mode</span>
+                <label for="dark-mode-toggle" class="inline-flex relative items-center cursor-pointer">
+                    <input type="checkbox" value="" id="dark-mode-toggle" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
+                </label>
+            </div>
+        </div>
+
+        <!-- Form Inputs -->
+        <div class="space-y-4">
+            <div>
+                <label for="prompt" class="block text-sm font-medium">Topik Utama</label>
+                <textarea id="prompt" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-white p-2" placeholder="Contoh: Manfaat membaca buku setiap hari"></textarea>
+            </div>
+            <div>
+                <label for="writing-style" class="block text-sm font-medium">Gaya Penulisan</label>
+                <select id="writing-style" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-white p-2">
+                    <option>Santai</option>
+                    <option>Profesional</option>
+                    <option>Inspiratif</option>
+                    <option>Humoris</option>
+                    <option>Teknis</option>
+                </select>
+            </div>
+            <div>
+                <label for="max-chars" class="block text-sm font-medium">Maksimum Karakter per Bagian (opsional)</label>
+                <input type="number" id="max-chars" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-white p-2" placeholder="Contoh: 280">
+            </div>
+        </div>
+
+        <!-- Folder Management Section -->
+        <div class="mt-6 space-y-4">
+             <div>
+                <label for="folder-select" class="block text-sm font-medium">Pilih Folder</label>
+                <select id="folder-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-white p-2"></select>
+             </div>
+             <div class="flex items-center space-x-2">
+                <input type="text" id="new-folder-name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-white p-2" placeholder="Nama folder baru...">
+                <button id="add-folder-btn" class="flex justify-center items-center rounded-md text-white bg-indigo-600 hover:bg-indigo-700 action-btn">+</button>
+                <button id="delete-folder-btn" class="flex justify-center items-center rounded-md text-white bg-red-600 hover:bg-red-700 action-btn">-</button>
+             </div>
+             <p id="folder-status" class="text-xs mt-1"></p>
+        </div>
+
+
+        <!-- API Key Section -->
+        <div class="mt-6">
+            <label for="api-key" class="block text-sm font-medium">Gemini API Key</label>
+            <div class="flex items-center space-x-2 mt-1">
+                <input type="password" id="api-key" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-white p-2" placeholder="Masukkan API Key Anda">
+                <button id="save-key-btn" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Simpan
+                </button>
+            </div>
+            <p id="key-status" class="text-xs mt-1"></p>
+        </div>
+
+        <!-- Generate Button -->
+        <div class="mt-6">
+            <button id="generate-btn" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <span id="generate-btn-text">Buat Thread</span>
+                <svg id="loader" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Output Area for New Generations -->
+        <div id="error-output" class="mt-4 text-red-500 text-sm"></div>
+        <div id="output" class="mt-6 space-y-3"></div>
+
+        <!-- Saved Threads Display Area -->
+        <div id="saved-threads-container" class="mt-8 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-4"></div>
+
+    </div>
+
+    <script src="popup.js" type="module"></script>
+</body>
+</html>
